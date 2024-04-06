@@ -27,3 +27,5 @@ Route::resource('/customer', CustomerController::class);
 Route::resource('/phase', PhaseController::class);
 Route::resource('/project', ProjectController::class);
 Route::get("/project/mockup/{project_id}", [ProjectMockUpController::class, "index"])->name("project.mockup.index");
+Route::post("/project/mockup", [ProjectMockUpController::class, "upload"])->name("project.mockup.upload");
+Route::delete("/project/mockup/{id}", [ProjectMockUpController::class, "delete"])->name("project.mockup.delete");

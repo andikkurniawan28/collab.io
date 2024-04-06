@@ -41,7 +41,7 @@
                                 class="btn btn-outline-info btn-sm"><i class="fas fa-edit"></i> Edit</a>
 
                             <a href="{{ route("project.mockup.index", $project->id) }}" type="button"
-                                class="btn btn-outline-info btn-sm"><i class="fas fa-images"></i> Mockup</a>
+                                class="btn btn-outline-info btn-sm" target="_blank"><i class="fas fa-images"></i> Mockup</a>
 
                             <a href="" type="button"
                                 class="btn btn-outline-info btn-sm"><i class="fas fa-diagram-project"></i> Flowchart</a>

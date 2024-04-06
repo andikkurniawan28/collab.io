@@ -9,100 +9,89 @@
 @endsection
 
 @section('form_content')
-    <div class="container d-flex justify-content-center mt-100">
-        <div class="row">
-            <div class="col-md-12">
-                <h2>BBBOOTSTRAP FILE UPLOAD</h2>
-
-                <div class="file-drop-area">
-                    <span class="choose-file-button">Choose files</span>
-                    <span class="file-message">or drag and drop files here</span>
-                    <input class="file-input" type="file" multiple>
-                </div>
-
-            </div>
-
+    <script src="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone-min.js"></script>
+    <link href="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone.css" rel="stylesheet" type="text/css" />
+    <div class="row text-center text-lg-start">
+        <div class="col-lg-12 col-md-12 col-12">
+            <form action="{{ route('project.mockup.upload') }}" method="post" enctype="multipart/form-data" id="image-upload"
+                class="dropzone">
+                @csrf
+                <input type="hidden" name="project_id" value="{{ $data->id }}">
+            </form>
+            <br>
         </div>
+        <script type="text/javascript">
+            var dropzone = new Dropzone('#image-upload', {
+                thumbnailWidth: 200,
+                maxFilesize: 10,
+                /* dalam mb */
+                acceptedFiles: ".jpeg,.jpg,.png,.gif",
+            });
+        </script>
+    </div>
+    <div class="row text-center text-lg-start">
+        <style>
+            .image-area {
+                position: relative;
+                width: 100%;
+                background: #333;
+            }
 
+            .image-area img {
+                max-width: 100%;
+                height: auto;
+            }
 
+            .remove-image {
+                display: none;
+                position: absolute;
+                top: -10px;
+                right: -10px;
+                border-radius: 10em;
+                padding: 2px 6px 3px;
+                text-decoration: none;
+                font: 700 21px/20px sans-serif;
+                background: #555;
+                border: 3px solid #fff;
+                color: #FFF;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(0, 0, 0, 0.3);
+                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+                -webkit-transition: background 0.5s;
+                transition: background 0.5s;
+            }
+
+            .remove-image:hover {
+                background: #E54E4E;
+                padding: 3px 7px 5px;
+                top: -11px;
+                right: -11px;
+            }
+
+            .remove-image:active {
+                background: #E54E4E;
+                top: -10px;
+                right: -11px;
+            }
+        </style>
+        @foreach ($data->mockup as $mockup)
+            <div class="col-lg-3 col-md-4 col-6">
+                <div class="image-area">
+                    <a href="{{ asset($mockup->path) }}" class="d-block mb-4 h-100" target="_blank">
+                        <img class="img-fluid img-thumbnail" src="{{ asset($mockup->path) }}" alt="">
+                    </a>
+                    <form action="{{ route("project.mockup.delete", $mockup->id) }}" method="POST">
+                        @csrf @method("DELETE")
+                        <input type="hidden" name="path" value="{{ $mockup->path }}">
+                        <button type="submit" class="remove-image" href="#" style="display: inline;">&#215;</button>
+                    </form>
+                </div>
+            </div>
+        @endforeach
     </div>
 @endsection
 
 @section('additional_style')
-    <link src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    </link>
-    <style>
-        h2 {
-            margin: 50px 0;
-        }
-
-        .file-drop-area {
-            position: relative;
-            display: flex;
-            align-items: center;
-            width: 450px;
-            max-width: 100%;
-            padding: 25px;
-            border: 1px dashed rgba(255, 255, 255, 0.4);
-            border-radius: 3px;
-            transition: 0.2s;
-
-        }
-
-        .choose-file-button {
-            flex-shrink: 0;
-            background-color: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
-            padding: 8px 15px;
-            margin-right: 10px;
-            font-size: 12px;
-            text-transform: uppercase;
-        }
-
-        .file-message {
-            font-size: small;
-            font-weight: 300;
-            line-height: 1.4;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .file-input {
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 100%;
-            cursor: pointer;
-            opacity: 0;
-
-        }
-
-        .mt-100 {
-            margin-top: 100px;
-        }
-    </style>
 @endsection
 
 @section('additional_script')
-    {{-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"> --}}
-    <script>
-        $(document).on('change', '.file-input', function() {
-
-
-            var filesCount = $(this)[0].files.length;
-
-            var textbox = $(this).prev();
-
-            if (filesCount === 1) {
-                var fileName = $(this).val().split('\\').pop();
-                textbox.text(fileName);
-            } else {
-                textbox.text(filesCount + ' files selected');
-            }
-        });
-    </script>
 @endsection
